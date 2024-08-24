@@ -6,6 +6,7 @@ const studentController = require('../controllers/studentController');
 const authController = require('../controllers/authController');
 const mantenedorController = require('../controllers/mantenedorController');
 const dashboardController = require('../controllers/dashboardController');
+const disciplinaController = require('../controllers/disciplinaController');
 
 const { authenticate, authorize,isAdmin  } = require('../middleware/authMiddleware');
 
@@ -24,8 +25,9 @@ router.post('/alumno', authenticate, mantenedorController.postAlumnoNuevo);
 router.get('/alumno', authenticate, mantenedorController.getAlumnos);
 
 // Rutas para Disciplinas (solo admin puede crear, actualizar, eliminar)
-router.post('/disciplinas', authenticate, isAdmin, mantenedorController.createDisciplina);
-router.get('/disciplinas', authenticate, mantenedorController.getDisciplinas);
+router.post('/disciplinas', authenticate, isAdmin, disciplinaController.agregarDisciplina);
+//router.get('/disciplinas', authenticate, mantenedorController.getDisciplinas);
+router.get('/disciplinas', authenticate, disciplinaController.getDisciplinas);
 router.get('/disciplinasMantenedor', authenticate, mantenedorController.getDisciplinasMantenedor);
 
 router.put('/disciplinas/:id', authenticate, isAdmin, mantenedorController.updateDisciplina);
@@ -33,16 +35,19 @@ router.delete('/disciplinas/:id', authenticate, isAdmin, mantenedorController.de
 
 
 router.get('/dias', authenticate, mantenedorController.getDias);
-router.get('/times', authenticate, mantenedorController.getTimes);
+//router.get('/times', authenticate, mantenedorController.getTimes);
 
 router.get('/estadisticas', authenticate, dashboardController.getEstadisticasPorDisciplina);
 
 // Rutas para Instructores (solo admin puede crear, actualizar, eliminar)
-//router.post('/instructores', authenticate, isAdmin, mantenedorController.createInstructor);
-router.get('/instructores', authenticate, instructorController.getInstructores);
+router.post('/instructores', authenticate, isAdmin, instructorController.postInstructors);
+router.get('/instructores', authenticate, instructorController.getInstructores2);
+
 //router.put('/instructores/:id', authenticate, isAdmin, mantenedorController.updateInstructor);
 //router.delete('/instructores/:id', authenticate, isAdmin, mantenedorController.deleteInstructor);
 
+
+router.get('/planes', authenticate, mantenedorController.getPlanes);
 /* 
 // Rutas para Planes (solo admin puede crear, actualizar, eliminar)
 router.post('/planes', authenticate, isAdmin, mantenedorController.createPlan);
