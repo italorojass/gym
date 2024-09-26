@@ -3,71 +3,132 @@
     <div class="card">
       <div class="card-header">
         <h4 class="card-title">Listado de alumnos</h4>
+
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-responsive-lg table-striped table-hover">
-            <thead>
-              <tr>
-                <th>Almuno</th>
-                <th>Disciplina</th>
-                <th>Fecha de ingreso</th>
-                <th>Instructor</th>
-                <th>Estado de pago</th>
-                <th>Monto</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="alumnos.length > 0;else sinData">
-              <tr *ngFor="let item of alumnos">
+        <div class="col-6">
 
-                <td>{{item.StudentName}}</td>
-                <td>{{item.DisciplineName}}</td>
-                <td>{{item.EnrollmentDate | date : 'dd/MM/yyyy'}}</td>
-                <td>{{item.InstructorName}}</td>
-               <!--  <td>
-                <span class="badge light badge-success">Successful</span>
-              </td> -->
-
-               <td >
-                <span [ngClass]=" !item.IsOverdue ? 'badge light badge-success': 'badge light badge-danger'"> {{ item.IsOverdue ? 'Vencido' : 'Al día' }}</span>
-
-               </td>
-                <td>${{item.Price | number}}</td>
-                <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
-                      <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24" />
-                          <circle fill="#000000" cx="5" cy="12" r="2" />
-                          <circle fill="#000000" cx="12" cy="12" r="2" />
-                          <circle fill="#000000" cx="19" cy="12" r="2" />
-                        </g>
-                      </svg>
-                    </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Editar</a>
-                      <a class="dropdown-item" href="#">Eliminar</a>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-
-            <ng-template #sinData>
-              <tbody>
-                <tr>
-                  <td colspan="7" align="center">Sin datos</td>
-                </tr>
-              </tbody>
-            </ng-template>
-
-
-          </table>
+          <input (keyup)="applyFilter($event)" class="form-control form-control-sm" placeholder="Escribe lo que quieres buscar" [(ngModel)]="inputBusqueda">
         </div>
+        <div class="table-responsive " >
+
+          <div class="mat-elevation-z8" *ngIf="dataSource">
+            <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
+
+              <!-- Student Name Column -->
+              <ng-container matColumnDef="alumno_nombre">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let student"> {{student.nombreApellido}} </td>
+              </ng-container>
+
+              <!-- Commune Column -->
+              <ng-container matColumnDef="alumno_comuna">
+                <th mat-header-cell *matHeaderCellDef> Comuna </th>
+                <td mat-cell *matCellDef="let student"> {{student.alumno_comuna}} </td>
+              </ng-container>
+
+              <!-- Contact Column -->
+              <ng-container matColumnDef="alumno_contacto">
+                <th mat-header-cell *matHeaderCellDef> Contacto / Emergencias </th>
+                <td mat-cell *matCellDef="let student"> {{student.contactoCompleto}} </td>
+              </ng-container>
+
+
+
+              <!-- Email Column -->
+              <ng-container matColumnDef="alumno_email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let student"> {{student.alumno_email}} </td>
+              </ng-container>
+
+              <!-- Days Column -->
+              <ng-container matColumnDef="dias">
+                <th mat-header-cell *matHeaderCellDef> Días </th>
+                <td mat-cell *matCellDef="let student"> {{student.dias}} </td>
+              </ng-container>
+
+              <!-- Disciplines Column -->
+              <ng-container matColumnDef="disciplinas">
+                <th mat-header-cell *matHeaderCellDef> Disciplinas </th>
+                <td mat-cell *matCellDef="let student"> {{student.disciplinas}} </td>
+              </ng-container>
+
+              <!-- Registration Date Column -->
+              <ng-container matColumnDef="fecha_registro">
+                <th mat-header-cell *matHeaderCellDef> Fecha de Ingreso </th>
+                <td mat-cell *matCellDef="let student"> {{student.fecha_registro | date : 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <!-- Renewal Date Column -->
+              <ng-container matColumnDef="fecha_renovacion">
+                <th mat-header-cell *matHeaderCellDef> Fecha de Renovación </th>
+                <td mat-cell *matCellDef="let student"> {{student.fecha_renovacion | date : 'dd/MM/yyyy'}} </td>
+              </ng-container>
+
+              <!-- Plan Name Column -->
+              <ng-container matColumnDef="plan_nombre">
+                <th mat-header-cell *matHeaderCellDef> Plan </th>
+                <td mat-cell *matCellDef="let student">
+                  <span class="badge badge-light" >
+                    {{student.plan_nombre}}
+                  </span>
+                  </td>
+              </ng-container>
+
+              <!-- Overdue Status Column -->
+              <ng-container matColumnDef="IsOverdue">
+                <th mat-header-cell *matHeaderCellDef> Estado de Pago </th>
+                <td mat-cell *matCellDef="let student">
+                  <span class="badge badge-success" [ngClass]="">{{student.IsOverdue ? 'Atrasado' : 'Al día'}} </span>
+                  </td>
+              </ng-container>
+
+              <!-- Observations Column -->
+              <ng-container matColumnDef="alumno_observaciones">
+                <th mat-header-cell *matHeaderCellDef> Observaciones </th>
+                <td mat-cell *matCellDef="let student"> {{student.alumno_observaciones}} </td>
+              </ng-container>
+
+               <!-- Actions Column -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef> Acciones </th>
+          <td mat-cell *matCellDef="let student;let i=index">
+            <button *ngIf="editingIndex === i; else editButton" mat-icon-button color="primary" (click)="stopEdit()">
+              <mat-icon>save</mat-icon>
+
+            </button>
+            <button mat-icon-button color="warn" *ngIf="editingIndex === i" (click)="cancel(i)">
+              <mat-icon>cancel</mat-icon>
+
+            </button>
+            <button mat-icon-button (click)="onDelete(student)">
+              <mat-icon class="text-danger">delete</mat-icon>
+            </button>
+
+            <ng-template #editButton>
+              <button mat-icon-button color="primary" (click)="onEdit(i,student)">
+                <mat-icon>edit</mat-icon>
+              </button>
+
+            </ng-template>
+          </td>
+        </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+
+
+          </div>
+        </div>
+        <mat-paginator [length]="100"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 50,100]"
+        aria-label="Seleccionar página">
+        </mat-paginator>
       </div>
+
     </div>
   </div>
 

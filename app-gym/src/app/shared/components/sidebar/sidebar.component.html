@@ -38,7 +38,7 @@
 
       </li>
 
-      <li [ngClass]="!openMenu ?  '': 'mm-active'">
+      <li [ngClass]="!openMenu ?  '': 'mm-active'" *ngIf="roleUser=='1'">
 
         <a class="has-arrow ai-icon" (click)="openMenu = !openMenu" aria-expanded="false" style="cursor: pointer;">
           <i class="fa fa-cog"></i>
@@ -48,7 +48,7 @@
         <ul aria-expanded="false" class="mm-collapse" [ngClass]="openMenu ? 'mm-show': ''">
           <li><a [routerLink]="['/administrador/mantenedores/instructor']">Instructores</a></li>
           <li><a [routerLink]="['/administrador/mantenedores/disciplinas']">Disciplinas</a></li>
-          <li><a [routerLink]="['/administrador/mantenedores/horarios']">Horarios</a></li>
+
           <li><a [routerLink]="['/administrador/mantenedores/planes']">Planes</a></li>
 
         </ul>

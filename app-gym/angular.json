@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/vendor/chartist/css/chartist.min.css",
               "src/assets/vendor/bootstrap-select/css/bootstrap-select.min.css",
               "src/assets/css/style.css",
@@ -34,6 +35,9 @@
               "node_modules/flatpickr/dist/flatpickr.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "src/assets/vendor/global/global.min.js",
               "src/assets/vendor/bootstrap-select/js/bootstrap-select.min.js",
               "src/assets/vendor/chart-js/chart.bundle.min.js",

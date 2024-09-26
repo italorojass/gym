@@ -18,7 +18,14 @@ import { JwtInterceptor } from '../interceptors/jwt.interceptor';
 import { ErrorsInterceptor } from '../interceptors/errors.interceptor';
 import { MantenedoresService } from './services/mantenedores.service';
 
-
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatSortModule } from '@angular/material/sort';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @NgModule({
   declarations: [
     LayoutComponent,
@@ -36,8 +43,15 @@ import { MantenedoresService } from './services/mantenedores.service';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgSelectModule
-
+    NgSelectModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatSortModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers : [
     BreadcrumbService,

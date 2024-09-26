@@ -11,14 +11,14 @@
         <form [formGroup]="formDisciplina" (ngSubmit)="submit()">
           <div class="row">
 
-            <div class="col-lg-3 mb-2">
+            <div class="col-lg-4 mb-2">
               <div class="form-group">
                 <label class="text-label">Disciplina<span class="required">*</span></label>
                 <input type="text" name="firstName" class="form-control form-control-sm" placeholder="Ejemplo: Boxeo" required=""
                   formControlName="disciplina">
               </div>
             </div>
-            <div class="col-lg-3 mb-3" >
+            <div class="col-lg-4 mb-3" >
               <div class="form-group">
                 <label class="text-label">Descripción</label>
                 <input type="text" class="form-control form-control-sm" name="descripcion" formControlName="descripcion">
@@ -26,7 +26,7 @@
 
               </div>
             </div>
-            <div class="col-lg-3 mb-3" >
+            <div class="col-lg-4 mb-3" >
               <div class="form-group">
                 <label class="text-label">Instructor<span class="required">*</span></label>
                 <ng-select [items]="instructores"
@@ -55,21 +55,41 @@
               </div>
             </div> -->
 
-            <div class="col-lg-3 mb-3" >
+            <div class="col-lg-4 mb-3" >
               <div class="form-group">
-                <label class="text-label">Horario<span class="required">*</span></label>
-                <ng-select [items]="horarios"
-                placeholder="Seleccionar horarios"
-                bindLabel="TimeValue"
-                bindValue="TimeID"
+                <label class="text-label">Días<span class="required">*</span></label>
+                <ng-select [items]="dias"
+                placeholder="Seleccionar días"
+                bindLabel="nombre"
+                bindValue="id"
                 [multiple]="true"
-                  formControlName="horarios" [(ngModel)]="selectedHorario">
+                formControlName="dias" [(ngModel)]="selectedDias" >
                 </ng-select>
+
 
 
               </div>
             </div>
+            <div class="col-lg-4 mb-3" >
+              <div class="form-group">
+                <label class="text-label">Horario<span class="required">*</span></label>
 
+                <input
+                type="text"
+                class="form-control form-control-sm"
+                placeholder="Ingresa la hora"
+                mwlFlatpickr
+                [(ngModel)]="selectedHorario"
+                [mode]="'multiple'"
+                formControlName="horarios"
+                [dateFormat]="'H:i'"
+                [noCalendar]="true"
+                [enableTime]="true"
+              />
+
+
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-12">
@@ -92,7 +112,106 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-responsive-lg table-striped table-hover">
+          <table mat-table [dataSource]="disciplinas" class="mat-elevation-z8">
+
+            <!-- Discipline Name Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef>Disciplina</th>
+              <td mat-cell *matCellDef="let item; let i = index">
+                {{ item.disciplina.nombre }}
+              </td>
+            </ng-container>
+
+            <!-- Days Column -->
+            <ng-container matColumnDef="dias">
+              <th mat-header-cell *matHeaderCellDef>Días</th>
+              <td mat-cell *matCellDef="let item; let i = index">
+                <div *ngFor="let subitem of item.disciplina.horario; let si = index">
+                 <!--  <ng-select
+                    [items]="diasArray"
+                    *ngIf="editingIndex === i; else viewMode"
+                    bindLabel="nombre"
+                    bindValue="nombre"
+                    placeholder="Seleccionar días"
+                    [multiple]="true"
+                    [(ngModel)]="subitem.dias">
+                  </ng-select> -->
+                  <ng-select
+                  [items]="mergedDiasArray"
+                  *ngIf="editingIndex === i; else viewMode"
+                  bindLabel="nombre"
+                  bindValue="nombre"
+                  placeholder="Seleccionar días"
+                  [multiple]="true"
+                  [(ngModel)]="subitem.dias" >
+
+                  </ng-select>
+                  <ng-template #viewMode>
+                    <span class="badge light badge-light" *ngFor="let dia of subitem.dias">{{dia}}</span>
+                  </ng-template>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Schedule Column -->
+            <ng-container matColumnDef="hora">
+              <th mat-header-cell *matHeaderCellDef>Horario</th>
+              <td mat-cell *matCellDef="let item; let i = index">
+                <div *ngFor="let subitem of item.disciplina.horario">
+                  <span class="badge light badge-light">{{subitem.hora}}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Instructors Column -->
+            <ng-container matColumnDef="instructor">
+              <th mat-header-cell *matHeaderCellDef>Instructor</th>
+              <td mat-cell *matCellDef="let item; let i = index">
+                <ng-select
+                  [items]="instructores"
+                  *ngIf="editingIndex === i; else viewModeInstructor"
+                  bindLabel="nombre"
+                  bindValue="nombre"
+                  placeholder="Seleccionar instructores"
+                  [multiple]="true"
+                  [(ngModel)]="item.instructores">
+                </ng-select>
+
+                <ng-template #viewModeInstructor>
+                  <span class="badge badge-primary" *ngFor="let instructor of item.disciplina.instructores">{{instructor.nombre}}</span>
+                </ng-template>
+              </td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let item; let i = index">
+                <button mat-icon-button (click)="stopEdit()" *ngIf="editingIndex === i; else editBtn">
+                  <mat-icon class="text-success">save</mat-icon>
+                </button>
+
+                <ng-template #editBtn>
+                  <button mat-icon-button (click)="onEdit(i,item)">
+                    <mat-icon class="text-primary">edit</mat-icon>
+                  </button>
+
+                </ng-template>
+                <button mat-icon-button color="warn" (click)="cancel(i)" *ngIf="editingIndex === i">
+                  <mat-icon class="text-danger">cancel</mat-icon>
+                </button>
+                <button mat-icon-button (click)="onDelete(item)">
+                  <mat-icon class="text-danger">delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['nombre', 'dias', 'hora', 'instructor', 'acciones']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nombre', 'dias', 'hora', 'instructor', 'acciones'];"></tr>
+          </table>
+
+
+          <!-- <table class="table table-responsive-lg table-striped table-hover">
             <thead>
               <tr>
                 <th>Disciplina</th>
@@ -103,37 +222,71 @@
               </tr>
             </thead>
             <tbody *ngIf="disciplinas.length > 0;else sinData">
-              <tr *ngFor="let item of disciplinas">
+              <tr *ngFor="let item of disciplinas;let i=index">
 
-                <td>{{item.DisciplineName}}</td>
-                <td>  <span class="badge light badge-light" *ngFor="let subitem of item.Schedules">{{subitem.Day}}</span></td>
+                <td>{{item.disciplina.nombre}}</td>
+                <td>
+                  <div *ngFor="let subitem of item.disciplina.horario;let si=index">
+                    <ng-select
+                    [items]="mergedDiasArray"
+                    *ngIf="editingIndex === i; else viewMode"
+                    bindLabel="nombre"
+                    bindValue="nombre"
+                    placeholder="Seleccionar días"
+                    [multiple]="true"
+                    [(ngModel)]="subitem.dias" >
+
+                    </ng-select>
+                  </div>
+                <ng-template #viewMode>
+                  <span class="badge light badge-light" *ngFor="let subitem of item.disciplina.horario">{{subitem.dias}}</span>
+
+                </ng-template>
+                </td>
                 <td>
 
-                  <span class="badge light badge-light" *ngFor="let subitem of item.Schedules">{{subitem.Time}}</span>
+                  <span class="badge light badge-light" *ngFor="let subitem of item.disciplina.horario">{{subitem.hora}}</span>
                 </td>
 
                <td >
+                <div *ngFor="let subitem of item.disciplina.instructores;let si=index">
+                  <ng-select
+                  [items]="instructores"
+                  *ngIf="editingIndex === i; else viewModeInstructor"
+                  bindLabel="nombre"
+                  bindValue="nombre"
+                  placeholder="Seleccionar instructor"
+                  [multiple]="true"
+                  [(ngModel)]="subitem.nombre" >
 
-                 <span class="badge light badge-primary" *ngFor="let subitem of item.Instructors">{{subitem.InstructorName}}</span>
+                  </ng-select>
+                </div>
+              <ng-template #viewModeInstructor>
+                <span class="badge light badge-primary" *ngFor="let subitem of item.disciplina.instructores">{{subitem.nombre}}</span>
+
+              </ng-template>
+
 
                </td>
                 <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
-                      <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24" />
-                          <circle fill="#000000" cx="5" cy="12" r="2" />
-                          <circle fill="#000000" cx="12" cy="12" r="2" />
-                          <circle fill="#000000" cx="19" cy="12" r="2" />
-                        </g>
-                      </svg>
+                  <button *ngIf="editingIndex === i; else editButton" mat-icon-button color="primary" (click)="stopEdit()">
+                    <mat-icon>save</mat-icon>
+
+                  </button>
+                  <button mat-icon-button color="warn" *ngIf="editingIndex === i" (click)="cancel(i)">
+                    <mat-icon>cancel</mat-icon>
+
+                  </button>
+                  <button mat-icon-button (click)="onDelete(item)">
+                    <mat-icon class="text-danger">delete</mat-icon>
+                  </button>
+
+                  <ng-template #editButton>
+                    <button mat-icon-button color="primary" (click)="onEdit(i,item)">
+                      <mat-icon>edit</mat-icon>
                     </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Editar</a>
-                      <a class="dropdown-item" href="#">Eliminar</a>
-                    </div>
-                  </div>
+
+                  </ng-template>
                 </td>
               </tr>
 
@@ -148,8 +301,13 @@
             </ng-template>
 
 
-          </table>
+          </table> -->
         </div>
+        <mat-paginator [length]="100"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 25, 50,100]"
+        aria-label="Seleccionar página">
+        </mat-paginator>
       </div>
     </div>
   </div>

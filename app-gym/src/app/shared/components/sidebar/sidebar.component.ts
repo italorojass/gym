@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuSidebarService } from '../../services/menu-sidebar.service';
+import * as jwt_decode from "jwt-decode";
 
 @Component({
   selector: 'app-sidebar',
@@ -9,7 +10,7 @@ import { MenuSidebarService } from '../../services/menu-sidebar.service';
 export class SidebarComponent implements OnInit {
   openMenu: boolean = false;
   menu: any = [];
-
+  roleUser = sessionStorage.getItem('rolUser')!;
   ngOnInit(): void {
     this.menu = [
       {
@@ -22,26 +23,9 @@ export class SidebarComponent implements OnInit {
         icon: 'fa-users',
         url: 'alumnos'
       },
-      {
-        title: 'Mantenedores',
-        icon: 'fa-cog',
-        openMenu : false,
-        subItem: [
-          {
-            url: '/administrador/mantenedores/instructor',
-          },
-          {
-            url: '/administrador/mantenedores/disciplinas',
-          },
-          {
-            url: '/administrador/mantenedores/horarios',
-          },
-          {
-            url: '/administrador/mantenedores/planes',
-          }
-        ]
-      }
+
     ]
+
   }
   collapseMenu() {
     this.openMenu = true;

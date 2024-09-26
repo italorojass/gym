@@ -22,6 +22,15 @@ export class MantenedoresService {
 
   }
 
+  getComunas(){
+    return this.httpClient.get(`${this.HOST}/keys/comunas`);
+  }
+
+  crearHorario(body : any){
+    return this.httpClient.post(`${this.HOST}/horarios`,body)
+  }
+
+
   crearAlumno(body : any){
     return this.httpClient.post(`${this.HOST}/alumno`,body)
   }
@@ -29,12 +38,16 @@ export class MantenedoresService {
   getAlumnos(){
     return this.httpClient.get(`${this.HOST}/alumno`);
   }
+  deleteAlumnos(id:number){
+    return this.httpClient.delete(`${this.HOST}/alumno/${id}`);
+  }
+
   getDias(){
     return this.httpClient.get(`${this.HOST}/dias`);
   }
 
-  getTimes(){
-    return this.httpClient.get(`${this.HOST}/times`);
+  getHorarios(){
+    return this.httpClient.get(`${this.HOST}/horarios`);
   }
 
   getInstructores(){

@@ -8,7 +8,7 @@
         <form [formGroup]="formPlanes" (ngSubmit)="submit()">
           <div class="row">
 
-            <div class="col-lg-4 mb-3" >
+           <!--  <div class="col-lg-4 mb-3" >
               <div class="form-group">
                 <label class="text-label">Nombre del plan<span class="required">*</span></label>
                 <input type="text" name="plan" formControlName="plan" class="form-control form-control-sm">
@@ -16,11 +16,18 @@
 
 
               </div>
-            </div>
+            </div> -->
             <div class="col-lg-4 mb-3" >
               <div class="form-group">
-                <label class="text-label">Descripción<span class="required">*</span></label>
-                <input type="text" name="descripcion" formControlName="descripcion"  class="form-control form-control-sm">
+                <label class="text-label">Tipo plan<span class="required">*</span></label>
+                <ng-select [items]="tiposPlan"
+                placeholder="Seleccionar tipo plan"
+                bindLabel="nombre"
+                bindValue="nombre"
+                [multiple]="false"
+                  formControlName="tipo" [(ngModel)]="selectedPlan" >
+                </ng-select>
+
 
 
 
@@ -62,42 +69,55 @@
           <table class="table table-responsive-lg table-striped table-hover">
             <thead>
               <tr>
+              <!--   <th>Plan</th> -->
                 <th>Plan</th>
-                <th>Descripción</th>
                 <th>Arancel</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody *ngIf="planes.length > 0;else sinData">
-              <tr *ngFor="let item of planes">
+              <tr *ngFor="let item of planes;let i =index">
 
-                <td>{{item.PlanName}}</td>
+               <!--  <td>{{item.nombre}}</td> -->
                 <td>
-                  {{item.Description}}
+
+
+
+                  {{item.duracion}}
                 </td>
                 <td>
+                  <input class="form-control" type="number" *ngIf="editingIndex === i; else viewMode" matInput
+                  [(ngModel)]="item.precio" placeholder="Ingresar el nuevo precio">
 
-                  <span class="badge light badge-primary">$ {{item.Price | number}}</span>
+                <ng-template #viewMode>
+                  <span class="badge light badge-primary">$ {{item.precio | number}}</span>
+
+                </ng-template>
+                  <!-- <span class="badge light badge-primary">$ {{item.precio | number}}</span> -->
                 </td>
 
 
                 <td>
-                  <div class="dropdown">
-                    <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
-                      <svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1">
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <rect x="0" y="0" width="24" height="24" />
-                          <circle fill="#000000" cx="5" cy="12" r="2" />
-                          <circle fill="#000000" cx="12" cy="12" r="2" />
-                          <circle fill="#000000" cx="19" cy="12" r="2" />
-                        </g>
-                      </svg>
+                  <button *ngIf="editingIndex === i; else editButton" mat-icon-button color="primary" (click)="stopEdit()">
+                    <mat-icon>save</mat-icon>
+
+                  </button>
+                  <button mat-icon-button color="warn" *ngIf="editingIndex === i" (click)="cancel(i)">
+                    <mat-icon>cancel</mat-icon>
+
+                  </button>
+                  <button mat-icon-button (click)="onDelete(item)">
+                    <mat-icon class="text-danger">delete</mat-icon>
+                  </button>
+
+                  <ng-template #editButton>
+                    <button mat-icon-button color="primary" (click)="onEdit(i,item)">
+                      <mat-icon>edit</mat-icon>
                     </button>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">Editar</a>
-                      <a class="dropdown-item" href="#">Eliminar</a>
-                    </div>
-                  </div>
+
+                  </ng-template>
+
+
                 </td>
               </tr>
 

@@ -23,6 +23,6 @@ export class PlanesService {
   }
 
   deletePlan(id: number): Observable<any> {
-    return this.httpClient.delete<any>(`${this.HOST}/planes${id}`);
+    return this.httpClient.delete<any>(`${this.HOST}/planes/${id}`);
   }
 }

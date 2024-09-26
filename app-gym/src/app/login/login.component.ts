@@ -25,9 +25,10 @@ export class LoginComponent {
     this.loginSv.login(this.loginForm.value).subscribe((r:any)=>{
       console.log(r);
       sessionStorage.setItem('access_token',r.token);
+      sessionStorage.setItem('user',this.loginForm.value.username!);
       let data = JSON.parse(atob(r.token.split('.')[1]));
       console.log(data);
-
+      sessionStorage.setItem('rolUser',data.role);
       switch(data.role){
         case '1' :
          this._router.navigate(['/administrador']);
@@ -46,6 +47,10 @@ export class LoginComponent {
     //this._router.navigate(['/instructor']);
     /* this._router.navigate(['/administrador']); */
   }
+
+  showPass:boolean=true;
+
+
 
   dictRoles(){
     return [{

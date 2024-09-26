@@ -74,21 +74,16 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-           <!--  <tbody *ngIf="disciplinas.length > 0;else sinData">
-              <tr *ngFor="let item of disciplinas">
+            <tbody *ngIf="horarios.length > 0;else sinData">
+              <tr *ngFor="let item of horarios">
 
-                <td>{{item.DisciplineName}}</td>
-                <td>  <span class="badge light badge-light" *ngFor="let subitem of item.Schedules">{{subitem.Day}}</span></td>
+                <td>{{item.nombre}}</td>
+
                 <td>
 
-                  <span class="badge light badge-light" *ngFor="let subitem of item.Schedules">{{subitem.Time}}</span>
+                  <span class="badge light badge-light" >{{item.hora_inicio}}</span>
                 </td>
 
-               <td >
-
-                 <span class="badge light badge-primary" *ngFor="let subitem of item.Instructors">{{subitem.InstructorName}}</span>
-
-               </td>
                 <td>
                   <div class="dropdown">
                     <button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown">
@@ -117,7 +112,7 @@
                   <td colspan="7" align="center">Sin datos</td>
                 </tr>
               </tbody>
-            </ng-template> -->
+            </ng-template>
 
 
           </table>

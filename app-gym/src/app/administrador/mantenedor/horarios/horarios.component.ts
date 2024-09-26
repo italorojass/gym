@@ -16,7 +16,7 @@ export class HorariosComponent implements OnInit{
   selectedHorario : any='';
   ngOnInit(): void {
     this.getDias();
-    //this.getHorarios();
+    this.getHorarios();
   }
 
   constructor(private fb : FormBuilder,
@@ -24,14 +24,18 @@ export class HorariosComponent implements OnInit{
 
   }
 
-  submit(){
 
+  submit(){
+    this.mansv.crearHorario(this.formHorario.value).subscribe(r=>{
+      this.getHorarios();
+    })
   }
 
   horarios : any=[];
 
   getHorarios(){
-    this.mansv.getTimes().subscribe(r=>{
+    this.mansv.getHorarios().subscribe(r=>{
+      console.log(r);
       this.horarios= r;
     })
   }

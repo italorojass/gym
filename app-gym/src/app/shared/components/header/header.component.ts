@@ -12,6 +12,8 @@ export class HeaderComponent {
 
   }
   showmenu: boolean = false;
+  roleUser = sessionStorage.getItem('rolUser')!;
+  nombreUser = sessionStorage.getItem('user')!;
 
   sendMenu() {
     //  this.menuToggle.emit(this.showmenu);

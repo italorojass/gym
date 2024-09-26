@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,7 +14,6 @@ import { HttpInterceptorService } from './interceptors/http-interceptor.service'
 import { ToastrModule } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FlatpickrModule } from 'angularx-flatpickr';
-
 import { provideToastr } from 'ngx-toastr';
 @NgModule({
   declarations: [
@@ -28,11 +27,13 @@ import { provideToastr } from 'ngx-toastr';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     SharedModule,
+
     NgxSpinnerModule.forRoot(),
     ToastrModule.forRoot(),
     FlatpickrModule.forRoot()
   ],
   providers: [
+
     {provide: LocationStrategy, useClass: HashLocationStrategy},
     {provide: APP_BASE_HREF, useValue: '/'},
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

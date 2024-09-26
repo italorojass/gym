@@ -15,7 +15,7 @@ export class WidgetsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMetricas();
+    //this.getMetricas();
 
   }
 

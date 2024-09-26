@@ -17,7 +17,13 @@ body {
 input.ng-dirty.ng-invalid.ng-touched {
   color: #D20A0A
 }
+.text-danger{
+  color: #D20A0A !important;
 
+}
 input.ng-invalid.ng-touched {
   border-color: #D20A0A;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
