@@ -1,45 +1,24 @@
-# syntax = docker/dockerfile:1
+# Usa una imagen base de Node.js
+FROM node:14
 
-# Adjust NODE_VERSION as desired
-ARG NODE_VERSION=18.20.4
-FROM node:${NODE_VERSION}-slim as base
-
-LABEL fly_launch_runtime="Node.js"
-
-# Node.js app lives here
+# Establecer el directorio de trabajo en la imagen de Docker
 WORKDIR /app
 
-# Set production environment
-ENV NODE_ENV="production"
+# Copiar los archivos de la aplicación
+COPY package*.json ./
 
+# Instalar dependencias
+RUN npm install
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
+# Copiar el resto de los archivos
+COPY . .
 
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY --link package-lock.json package.json ./
-RUN npm ci --include=dev
-
-# Copy application code
-COPY --link . .
-
-# Build application
+# Construir la aplicación para producción
 RUN npm run build
 
-# Remove development dependencies
-RUN npm prune --omit=dev
+# Usar Nginx para servir la aplicación Angular
+FROM nginx:alpine
+COPY --from=build /app/dist/app-gym /usr/share/nginx/html
 
-
-# Final stage for app image
-FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
-CMD [ "npm", "run", "start" ]
+# Exponer el puerto
+EXPOSE 80
