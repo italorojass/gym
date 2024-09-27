@@ -1,24 +1,29 @@
-# Usa Node.js como base
-FROM node:18
+# Usar una imagen oficial de Node.js como imagen base para la fase de construcción
+FROM node:18 AS build
 
-# Establecer el directorio de trabajo dentro del contenedor
+# Establecer el directorio de trabajo
 WORKDIR /gym
 
 # Copiar package.json y package-lock.json
 COPY package*.json ./
 
-# Instalar dependencias, incluida Angular CLI
+# Instalar dependencias de Node.js
 RUN npm install
 
-# Copiar el resto del código al contenedor
+# Copiar el resto del código
 COPY . .
 
-# Construir la aplicación Angular
+# Ejecutar el build de la aplicación Angular
 RUN npm run build --prod
 
-# Usar un servidor estático como nginx para servir la aplicación
+# Usar una imagen de Nginx para servir la aplicación en la fase de producción
 FROM nginx:alpine
+
+# Copiar los archivos compilados de la carpeta dist/ a Nginx
 COPY --from=build /gym/dist/app-gym /usr/share/nginx/html
 
-# Exponer el puerto
+# Exponer el puerto 80 para servir la aplicación
 EXPOSE 80
+
+# Iniciar Nginx
+CMD ["nginx", "-g", "daemon off;"]
