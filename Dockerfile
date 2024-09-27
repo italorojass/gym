@@ -1,21 +1,24 @@
-# Usar la versión 18 de Node.js
+# Usa Node.js como base
 FROM node:18
 
-# Establecer el directorio de trabajo
+# Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /gym
 
-# Copiar los archivos de package.json e instalar las dependencias
+# Copiar package.json y package-lock.json
 COPY package*.json ./
+
+# Instalar dependencias, incluida Angular CLI
 RUN npm install
 
-# Copiar el resto de los archivos
+# Copiar el resto del código al contenedor
 COPY . .
 
-# Construir la aplicación (puedes ajustar el comando según tu proyecto)
-RUN npm run build
+# Construir la aplicación Angular
+RUN npm run build --prod
 
-# Exponer el puerto (si es necesario)
+# Usar un servidor estático como nginx para servir la aplicación
+FROM nginx:alpine
+COPY --from=build /app/dist/app-gym /usr/share/nginx/html
+
+# Exponer el puerto
 EXPOSE 80
-
-# Comando para iniciar la aplicación
-CMD ["npm", "start"]
