@@ -2,7 +2,7 @@
 FROM node:14
 
 # Establecer el directorio de trabajo en la imagen de Docker
-WORKDIR /app
+WORKDIR /dist/app-gym
 
 # Copiar los archivos de la aplicación
 COPY package*.json ./
