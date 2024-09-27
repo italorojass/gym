@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Ejecutar el build de la aplicación Angular
-RUN npm run build --prod
+RUN npm run build --prod --base-href
 
 # Usar una imagen de Nginx para servir la aplicación en la fase de producción
 FROM nginx:alpine
