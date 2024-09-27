@@ -2,7 +2,7 @@
 FROM node:18
 
 # Establecer el directorio de trabajo
-WORKDIR /
+WORKDIR /gym
 
 # Copiar los archivos de package.json e instalar las dependencias
 COPY package*.json ./
