@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY --from=build /gym/dist/app-gym /usr/share/nginx/html
 
 # Exponer el puerto 80 para servir la aplicación
-EXPOSE 80
+EXPOSE 4200
 
 # Iniciar Nginx
 CMD ["nginx", "-g", "daemon off;"]
