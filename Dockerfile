@@ -18,7 +18,7 @@ RUN npm run build --prod
 
 # Usar un servidor estático como nginx para servir la aplicación
 FROM nginx:alpine
-COPY --from=build /app/dist/app-gym /usr/share/nginx/html
+COPY --from=build /gym/dist/app-gym /usr/share/nginx/html
 
 # Exponer el puerto
 EXPOSE 80
