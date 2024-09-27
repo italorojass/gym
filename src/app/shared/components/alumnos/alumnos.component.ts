@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
+import { PlanesService } from 'src/app/administrador/mantenedor/services/planes.service';
 
 
 export interface StudentData {
@@ -53,7 +54,7 @@ export class AlumnosComponent implements OnInit,AfterViewInit  {
     'acciones'];
     dataSource = new MatTableDataSource<StudentData>();
 
-  constructor(private mantenedorSV :MantenedoresService){
+  constructor(private mantenedorSV :MantenedoresService, private planesSV: PlanesService){
 
   }
 
@@ -73,7 +74,7 @@ export class AlumnosComponent implements OnInit,AfterViewInit  {
 
   ngOnInit(): void {
     this.getAlumnos();
-
+    this.getPlanes();
     if(this.insertaAlumno){
       this.insertaAlumno.subscribe(r=>{
         this.getAlumnos();
@@ -103,6 +104,13 @@ export class AlumnosComponent implements OnInit,AfterViewInit  {
     })
   }
 
+  planes=[];
+  getPlanes(){
+    this.planesSV.getPlanes().subscribe((r:any)=>{
+      this.planes=r;
+      console.log(this.planes);
+    })
+  }
 
   onEdit(index:any,value:any){
     this.editingIndex = index;
@@ -118,21 +126,18 @@ export class AlumnosComponent implements OnInit,AfterViewInit  {
   stopEdit(): void {
     //this.dataSelect.responsable = this.userName;
     console.log(this.dataSelect);
-    if(this.dataSelect.precio){
-     /*  this.disciplinasSV.updateDisciplina(this.dataSelect.disciplina.id,this.dataSelect).subscribe(r=>{
 
-        Swal.fire(`Disciplina ${this.dataSelect.disciplina.nombre}`,'Actualizado correctamente.','success');
-        this.getDisciplinas();
-        this.editingIndex = null;
-      }) */
-    }else{
-      Swal.fire({
-        title: "Campo vacío",
-        text: "Debes agregar un valor para homologar",
-        icon: "warning"
-      });
+    let body = {
+      id : this.dataSelect.alumno_id,
+      contacto_emergencia : this.dataSelect.alumno_contacto_emergencia,
+      email : this.dataSelect.alumno_email,
+      observaciones : this.dataSelect.alumno_observaciones
     }
-
+    console.log(body);
+    this.mantenedorSV.updateAlumno(body).subscribe(r=>{
+      this.getAlumnos();
+      this.editingIndex = null;
+    })
   }
   onDelete(value:any){
     Swal.fire({

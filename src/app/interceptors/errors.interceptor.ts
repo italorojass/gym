@@ -17,6 +17,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error) => {
+
         if(error.status==0){
           Swal.fire({
             title: 'Sin conexión con la API',
@@ -41,8 +42,8 @@ export class ErrorsInterceptor implements HttpInterceptor {
         }
 
         Swal.fire({
-          title: error.error.message ? error.error.message : error.error,
-          text: error.error.error.message,
+          title: '',
+          text: error.error.message,
           icon: 'error',
           confirmButtonText: 'Continuar'
         })

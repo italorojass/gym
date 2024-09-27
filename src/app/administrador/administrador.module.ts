@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { HttpInterceptorService } from '../interceptors/http-interceptor.service';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { MatTableModule } from '@angular/material/table';
       useClass: JwtInterceptor,
       multi: true
     },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
   ]
 })
 export class AdministradorModule { }

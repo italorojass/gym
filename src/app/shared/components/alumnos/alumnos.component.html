@@ -30,7 +30,18 @@
               <!-- Contact Column -->
               <ng-container matColumnDef="alumno_contacto">
                 <th mat-header-cell *matHeaderCellDef> Contacto / Emergencias </th>
-                <td mat-cell *matCellDef="let student"> {{student.contactoCompleto}} </td>
+                <td mat-cell *matCellDef="let student;let i=index">
+
+                <!--   <input  *ngIf="editingIndex === i; else viewModeInstructor" class="form-control form-control-sm" [(ngModel)]="student.contactoCompleto">
+                  <ng-template #viewModeInstructor>
+                    <span class="badge badge-light" >
+                      {{student.contactoCompleto}}
+                    </span>
+                  </ng-template> -->
+
+                  {{student.contactoCompleto}}
+
+                </td>
               </ng-container>
 
 
@@ -38,7 +49,16 @@
               <!-- Email Column -->
               <ng-container matColumnDef="alumno_email">
                 <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let student"> {{student.alumno_email}} </td>
+                <td mat-cell *matCellDef="let student;let i=index">
+
+                  <input  *ngIf="editingIndex === i; else viewModeInstructor" class="form-control form-control-sm" [(ngModel)]="student.alumno_email">
+                  <ng-template #viewModeInstructor>
+                    <span class="badge badge-light" >
+                      {{student.alumno_email}}
+                    </span>
+                  </ng-template>
+
+                  </td>
               </ng-container>
 
               <!-- Days Column -->
@@ -68,10 +88,26 @@
               <!-- Plan Name Column -->
               <ng-container matColumnDef="plan_nombre">
                 <th mat-header-cell *matHeaderCellDef> Plan </th>
-                <td mat-cell *matCellDef="let student">
+                <td mat-cell *matCellDef="let student; let i =index">
+                  <!-- <ng-select
+                  [items]="planes"
+                  *ngIf="editingIndex === i; else viewModeInstructor"
+                  bindLabel="duracion"
+                  bindValue="duracion"
+                  placeholder="Seleccionar instructores"
+                  [multiple]="false"
+                  [(ngModel)]="student.plan_nombre">
+                </ng-select>
+
+                <ng-template #viewModeInstructor>
                   <span class="badge badge-light" >
                     {{student.plan_nombre}}
                   </span>
+                </ng-template> -->
+                <span class="badge badge-light" >
+                  {{student.plan_nombre}}
+                </span>
+
                   </td>
               </ng-container>
 
@@ -86,7 +122,17 @@
               <!-- Observations Column -->
               <ng-container matColumnDef="alumno_observaciones">
                 <th mat-header-cell *matHeaderCellDef> Observaciones </th>
-                <td mat-cell *matCellDef="let student"> {{student.alumno_observaciones}} </td>
+                <td mat-cell *matCellDef="let student;let i=index">
+                  <input  *ngIf="editingIndex === i; else viewModeInstructor" class="form-control form-control-sm" [(ngModel)]="student.alumno_observaciones">
+                  <ng-template #viewModeInstructor>
+                    <span  >
+                      {{student.alumno_observaciones}}
+                    </span>
+                  </ng-template>
+
+                  <!-- {{student.alumno_observaciones}}  -->
+
+                </td>
               </ng-container>
 
                <!-- Actions Column -->

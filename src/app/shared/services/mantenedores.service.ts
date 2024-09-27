@@ -34,7 +34,9 @@ export class MantenedoresService {
   crearAlumno(body : any){
     return this.httpClient.post(`${this.HOST}/alumno`,body)
   }
-
+  updateAlumno(body : any){
+    return this.httpClient.put(`${this.HOST}/alumno`,body)
+  }
   getAlumnos(){
     return this.httpClient.get(`${this.HOST}/alumno`);
   }
